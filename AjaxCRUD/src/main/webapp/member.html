@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Member</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+	$(document).ready(function(){
+		let currentPage = 1;
+		let lastPage = 0;
+		console.log('로딩 완료 시 currentPage : '+currentPage);
+		console.log('로딩 완료 시 lastPage : '+lastPage);
+		
+		// 회원목록
+	    $('#btnList').on('click',function(){
+	    	console.log('#btnList click');
+	    	
+			$.ajax({
+				url:'/getMembers'
+				, type:'GET'
+				, data : {'currentPage' : currentPage}
+	            , success:function(data){
+	                $('#list').empty();
+	                $(data.list).each(function(index,item){
+	                    $('#list').append('<tr>');
+	                    $('#list').append('<td><input type="checkbox" class="ck" value="'+item.id+'"></td>');
+	                    $('#list').append('<td>'+item.id+'</td>');
+	                    $('#list').append('<td>'+item.pw+'</td>');
+	                    $('#list').append('<td>'+item.name+'</td>');
+	                    $('#list').append('<td>'+item.age+'</td>');
+	                    $('#list').append('<td>'+item.gender+'</td>');
+	                    $('#list').append('</tr>');
+	        	   	});
+	                
+	                lastPage = data.lastPage;
+	        		console.log('비동기 요청 성공 시 lastPage : ' + lastPage);
+	        		
+	        		if(currentPage <= 1) {
+	                	$('#btnPrevious').hide();
+	                }else {
+	                	$('#btnPrevious').show();
+	                }
+	        		
+	        		if(currentPage<lastPage) {
+	        			$('#btnNext').show();
+	        		}else {
+	        	    	$('#btnNext').hide();
+	        		}
+	    		}
+	        });
+	    });
+		
+	    // 회원삭제
+	    $('#btnRemove').on('click',function(){
+	    	let ck = new Array(); // let ck = [];
+	    	$('.ck:checked').each(function(index, item) {
+	    		ck.push($(item).val());
+	    	});
+	    	
+			console.log('#btnRemove click');
+			$.ajax({
+				url:'/removeMembers'
+				, type:'POST'
+	           	, data:{'ck':ck}
+				, success : function() {
+					$('#btnList').trigger('click');
+				} 
+			});
+	    });
+	 
+	    // 회원추가
+	    $('#btnAdd').on('click',function(){
+	    	console.log('#btnAdd click');
+	    	
+	        var id = $('#id').val();
+	        var pw = $('#pw').val();
+	        var name = $('#name').val();
+	        var age = $('#age').val();
+	        var gender = $('#gender').val();
+	        
+	        if(id.length == 0) {
+	        	alert("아이디를 입력해 주세요");
+	        	$('#id').focus();
+	        }
+	        
+	        else if(pw.length == 0) {
+	        	alert("비밀번호를 입력해 주세요");
+	        	$('#pw').focus();
+	        }
+	        
+	        else if(name.length == 0) {
+	        	alert("이름을 입력해 주세요");
+	        	$('#name').focus();
+	        }
+	        
+	        else if(age.length == 0) {
+	        	alert("나이를 입력해 주세요");
+	        	$('#age').focus();
+	        }
+	        
+	        else if(gender.length == 0) {
+	        	alert("성별을 입력해 주세요");
+	        	$('#gender').focus();
+	        }
+	        
+	        if($('#id').val() != '' && $('#pw').val() != '' && $('#name').val() != '' && $('#age').val() != '' && $('#gender').val() != '') {
+				$.ajax({
+					url:'/addMembers'
+					, type:'POST'
+					, data : {'id':id, 'pw':pw, 'name':name, 'age':age, 'gender':gender}
+					, success : function() {
+						$('#btnList').trigger('click');
+					} 
+				});
+	        }
+	    });
+	    
+	    // 회원수정
+	    $('#btnModify').on('click',function(){
+	    	console.log('#btnModify click');
+
+	        let id = $('#id').val();
+	        let pw = $('#pw').val();
+	        let name = $('#name').val();
+	        let age = $('#age').val();
+	        let gender = $('#gender').val();
+	        
+	        if(id.length == 0) {
+	        	alert("아이디를 입력해 주세요");
+	        	$('#id').focus();
+	        }
+	        
+	        else if(pw.length == 0) {
+	        	alert("비밀번호를 입력해 주세요");
+	        	$('#pw').focus();
+	        }
+	        
+	        else if(name.length == 0) {
+	        	alert("이름을 입력해 주세요");
+	        	$('#name').focus();
+	        }
+	        
+	        else if(age.length == 0) {
+	        	alert("나이를 입력해 주세요");
+	        	$('#age').focus();
+	        }
+	        
+	        else if(gender.length == 0) {
+	        	alert("성별을 입력해 주세요");
+	        	$('#gender').focus();
+	        }
+	        
+	        if($('#id').val() != '' && $('#pw').val() != '' && $('#name').val() != '' && $('#age').val() != '' && $('#gender').val() != '') {
+				$.ajax({
+					url:'/modifyMembers'
+					, type:'POST'
+					, data : {'id':id, 'pw':pw, 'name':name, 'age':age, 'gender':gender}
+					, success : function() {
+						$('#btnList').trigger('click');
+					} 
+				});
+	        }
+	    });
+	    
+        // 이전 버튼 클릭
+       	$('#btnPrevious').on('click', function() {
+       		console.log('btnPrevious click');
+       		currentPage = currentPage - 1;
+       		console.log('currentPage after btnPrevious click :'+currentPage);
+       		$('#btnList').trigger('click');
+       	});
+		
+        // 다음 버튼 클릭
+    	$('#btnNext').on('click', function() {
+    		console.log('btnNext click');
+    		currentPage = currentPage + 1;
+    		console.log('currentPage after btnNext click :'+currentPage);
+    		$('#btnList').trigger('click');
+    	});
+		
+		// document ready 되면 회원목록이 보이게
+		$('#btnList').trigger('click');
+	});
+</script>
+</head>
+<body>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>id</th>
+                <th>pw</th>
+                <th>name</th>
+                <th>age</th>
+                <th>gender</th>
+                <th>추가</th>
+                <th>수정</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><input type="text" id="id"></td>
+                <td><input type="password" id="pw"></td>
+                <td><input type="text" id="name"></td>
+                <td><input type="text" id="age"></td>
+                <td>
+                    <select id="gender">
+                        <option value="Male">남</option>
+                        <option value="Female">여</option>
+                    </select>
+                </td>
+		        <td><button type="button" id="btnAdd">add</button></td>
+		        <td><button type="button" id="btnModify">modify</button></td>
+            </tr>
+        </tbody>
+    </table>
+ 
+    <button type="button" id="btnList">회원리스트</button>
+    <button type="button" id="btnRemove">remove</button>
+    <table border="1">
+        <thead>
+            <tr>
+                <th></th>
+                <th>id</th>
+                <th>pw</th>
+                <th>name</th>
+                <th>age</th>
+                <th>gender</th>
+            </tr>
+        </thead>
+        <tbody id="list">
+        </tbody>
+    </table>
+    
+    <button type="button" id="btnPrevious">이전</button>
+    <button type="button" id="btnNext">다음</button>
+</body>
+</html>
