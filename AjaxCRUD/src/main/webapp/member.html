@@ -79,27 +79,27 @@
 	        var gender = $('#gender').val();
 	        
 	        if(id.length == 0) {
-	        	alert("아이디를 입력해 주세요");
+	        	$('#helper').text('아이디를 입력하세요.');
 	        	$('#id').focus();
 	        }
 	        
 	        else if(pw.length == 0) {
-	        	alert("비밀번호를 입력해 주세요");
+	        	$('#helper').text('비밀번호를 입력하세요.');
 	        	$('#pw').focus();
 	        }
 	        
 	        else if(name.length == 0) {
-	        	alert("이름을 입력해 주세요");
+	        	$('#helper').text('이름을 입력하세요.');
 	        	$('#name').focus();
 	        }
 	        
 	        else if(age.length == 0) {
-	        	alert("나이를 입력해 주세요");
+	        	$('#helper').text('나이를 입력하세요.');
 	        	$('#age').focus();
 	        }
 	        
 	        else if(gender.length == 0) {
-	        	alert("성별을 입력해 주세요");
+	        	$('#helper').text('성별을 입력하세요.');
 	        	$('#gender').focus();
 	        }
 	        
@@ -126,27 +126,27 @@
 	        let gender = $('#gender').val();
 	        
 	        if(id.length == 0) {
-	        	alert("아이디를 입력해 주세요");
+	        	$('#helper').text('아이디를 입력하세요.');
 	        	$('#id').focus();
 	        }
 	        
 	        else if(pw.length == 0) {
-	        	alert("비밀번호를 입력해 주세요");
+	        	$('#helper').text('비밀번호를 입력하세요.');
 	        	$('#pw').focus();
 	        }
 	        
 	        else if(name.length == 0) {
-	        	alert("이름을 입력해 주세요");
+	        	$('#helper').text('이름을 입력하세요.');
 	        	$('#name').focus();
 	        }
 	        
 	        else if(age.length == 0) {
-	        	alert("나이를 입력해 주세요");
+	        	$('#helper').text('나이를 입력하세요.');
 	        	$('#age').focus();
 	        }
 	        
 	        else if(gender.length == 0) {
-	        	alert("성별을 입력해 주세요");
+	        	$('#helper').text('성별을 입력하세요.');
 	        	$('#gender').focus();
 	        }
 	        
@@ -210,6 +210,7 @@
                 </td>
 		        <td><button type="button" id="btnAdd">add</button></td>
 		        <td><button type="button" id="btnModify">modify</button></td>
+		        <td><span id="helper"></span></td>
             </tr>
         </tbody>
     </table>
